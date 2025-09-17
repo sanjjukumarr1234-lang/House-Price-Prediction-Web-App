@@ -1,12 +1,21 @@
 import pandas as pd
-import pickle as pk
+import joblib
 import streamlit as st
+import os
 
-# Load trained model
-model = pk.load(open("House_Price.pkl", "rb"))
+# -------------------------------
+# Load trained model safely
+# -------------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, "House_Price.pkl")
 
+# Load model with joblib
+model = joblib.load(model_path)
+
+# -------------------------------
+# Streamlit UI
+# -------------------------------
 st.title("House Price Prediction")
-
 st.header("🏠 House Price Prediction Web App")
 
 # User inputs
@@ -28,14 +37,15 @@ furnish_map = {"Unfurnished": 0, "Semi-Furnished": 1, "Furnished": 2}
 furnishingstatus = furnish_map[furnishingstatus]
 
 # Build input DataFrame
-input_data = pd.DataFrame([[area, beds, baths, stories, mainroad, guestroom, basement, hotwaterheating,
-                            airconditioning, parking, prefarea, furnishingstatus]],
-                          columns=["area","bedrooms","bathrooms","stories","mainroad","guestroom",
-                                   "basement","hotwaterheating","airconditioning","parking",
-                                   "prefarea","furnishingstatus"])
+input_data = pd.DataFrame(
+    [[area, beds, baths, stories, mainroad, guestroom, basement,
+      hotwaterheating, airconditioning, parking, prefarea, furnishingstatus]],
+    columns=["area", "bedrooms", "bathrooms", "stories", "mainroad", "guestroom",
+             "basement", "hotwaterheating", "airconditioning", "parking",
+             "prefarea", "furnishingstatus"]
+)
 
 # Prediction button
 if st.button("Predict Price"):
     prediction = model.predict(input_data)
-    st.success(f"💰 The predicted price of the house is ₹{prediction[0]*10000:.0f}")
-
+    st.success(f"💰 The predicted price of the house is ₹{prediction[0] * 10000:.0f}")
