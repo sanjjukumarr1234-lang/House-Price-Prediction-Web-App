@@ -3,7 +3,7 @@ import pickle as pk
 import streamlit as st
 
 # Load trained model
-model = pk.load(open("D:\\py\\House_Price.pkl", "rb"))
+model = pk.load(open("House_Price.pkl", "rb"))
 
 st.title("House Price Prediction")
 
@@ -38,3 +38,4 @@ input_data = pd.DataFrame([[area, beds, baths, stories, mainroad, guestroom, bas
 if st.button("Predict Price"):
     prediction = model.predict(input_data)
     st.success(f"💰 The predicted price of the house is ₹{prediction[0]*10000:.0f}")
+
