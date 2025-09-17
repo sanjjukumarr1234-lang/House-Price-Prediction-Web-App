@@ -48,4 +48,5 @@ input_data = pd.DataFrame(
 # Prediction button
 if st.button("Predict Price"):
     prediction = model.predict(input_data)
-    st.success(f"💰 The predicted price of the house is ₹{prediction[0] * 10000:.0f}")
+    st.success(f"💰 The predicted price of the house is ₹{prediction[0] * 100000:.0f}")
+
